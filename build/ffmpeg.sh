@@ -35,6 +35,15 @@ apt install -y \
   libjs-bootstrap \
   checkinstall
 
+## Update cmake
+apt install -y apt-transport-https ca-certificates gnupg software-properties-common wget
+wget --no-check-certificate -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+## For Ubuntu 20.04
+apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+apt install -y cmake
+## cmake -version
+## cmake version 3.31.3
+
 ## Build MPP
 cd /opt
 git clone -b jellyfin-mpp --depth=1 https://github.com/nyanmisaka/mpp.git rkmpp
@@ -46,7 +55,7 @@ printf '%s\n' '#!/usr/bin/make -f
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/default.mk
 
-ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
+ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE)) 
     export CMAKE_TOOLCHAIN_FILE=/etc/dpkg-cross/cmake/CMakeCross.txt
 endif
 
