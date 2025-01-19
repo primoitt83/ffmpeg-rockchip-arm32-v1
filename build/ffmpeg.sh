@@ -37,9 +37,9 @@ apt install -y \
 
 ## Update cmake
 apt install -y apt-transport-https ca-certificates gnupg software-properties-common wget
-wget --no-check-certificate -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-## For Ubuntu 20.04
-apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+wget --no-check-certificate --retry-on-host-error --retry-on-http-error=429,500,502,503 -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+apt update
 apt install -y cmake
 ## cmake -version
 ## cmake version 3.31.3
